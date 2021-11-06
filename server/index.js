@@ -4,8 +4,19 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// HTTP Status
+
 // Fine
 const OK = 200;
+
+// Method Not Allowed (Not GET or POST method)
+const METHOD_NOT_ALLOWED = 405;
+
+// Word not in records
+const NOT_FOUND = 404;
+
+// Word already exist
+const ALREADY_EXIST = 403;
 
 // Miss Params like word or definition
 const BAD_REQUEST = 400;
