@@ -13,6 +13,10 @@ const Global = createGlobalStyle`
     scroll-behavior: smooth;
   }
   
+  body {
+    min-height: 100vh;
+  }
+  
 `;
 
 export default Global;
