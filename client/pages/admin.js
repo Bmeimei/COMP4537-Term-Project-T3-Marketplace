@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import Image from "next/image";
 
 const Container = styled.div`
   display: flex;
@@ -35,7 +37,6 @@ const Field = styled.div`
   cursor: pointer;
   border-radius: 5px;
   border: 1px solid #ebebeb;
-
   &:focus-within {
     border-color: #be97c6;
   }
@@ -68,21 +69,43 @@ const Button = styled.button`
   border-radius: 0.3rem;
 `;
 
+const ErrorMessage = styled.h4`
+  color: red;
+`;
 const Admin = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
+
   return (
     <Container>
       <h1>Admin Login</h1>
-      <Form>
-        <Field>
-          <img src="/nickname.png" />
-          <Input placeholder="Username" />
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Field isError={errors.username}>
+          <Image src="/nickname.png" width="32" height="32" alt="username" title="username" />
+          <Input placeholder="Username" type="text" {...register("username", { required: true })} />
         </Field>
-        <Field>
-          <img src="/locking.png" />
-          <Input placeholder="Password" />
+        <Field isError={errors.password}>
+          <Image src="/locking.png" width="32" height="32" alt="password" title="password" />
+          <Input
+            placeholder="Password"
+            type="password"
+            {...register("password", { required: true })}
+          />
         </Field>
         <Button type="submit">Login</Button>
       </Form>
+      {(() => {
+        if (errors?.username) {
+          return <ErrorMessage>Username can not be empty</ErrorMessage>;
+        }
+        if (errors?.password) {
+          return <ErrorMessage>Password can not be empty</ErrorMessage>;
+        }
+      })()}
     </Container>
   );
 };
