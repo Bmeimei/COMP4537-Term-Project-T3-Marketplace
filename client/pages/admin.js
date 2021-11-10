@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -81,6 +81,7 @@ const Admin = () => {
   } = useForm();
   const onSubmit = async ({ username, password }) => {
     try {
+      setErrorMessage("");
       const data = (
         await axios.post("http://localhost:5050/admin/login", {
           username,
@@ -90,10 +91,12 @@ const Admin = () => {
       console.log("Data", data);
       setCookies("adminToken", data.token, { path: "/" });
     } catch (e) {
-      console.log(e);
+      console.log("Error: ", e.response.data.message);
+      setErrorMessage(e.response.data.message);
     }
   };
   const [cookies, setCookies] = useCookies(["adminToken"]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     console.log("Token", cookies.adminToken);
@@ -130,6 +133,7 @@ const Admin = () => {
           return <ErrorMessage>Password can not be empty</ErrorMessage>;
         }
       })()}
+      {errorMessage !== "" ? <ErrorMessage>{errorMessage}</ErrorMessage> : <></>}
     </Container>
   );
 };
