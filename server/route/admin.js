@@ -12,9 +12,4 @@ adminRouter.post("/login", loginController);
 
 adminRouter.post("/signup", signupController);
 
-adminRouter.get("/:id", (req, res, next) => {
-  res.send({ message: req.params });
-  next();
-});
-
 export default adminRouter;

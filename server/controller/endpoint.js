@@ -1,5 +1,5 @@
 import Endpoint from "../model/endpoint.js";
-import { INTERNAL_SERVER_ERROR, OK } from "../status.js";
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from "../status.js";
 
 const getRoute = (req) => {
   const route = req.route ? req.route.path : "";
@@ -9,15 +9,6 @@ const getRoute = (req) => {
     return route ? `${req.endpoint}${baseUrl === "/" ? "" : baseUrl}${route}` : "unknown route";
   }
   return route ? `${baseUrl === "/" ? "" : baseUrl}${route}` : "unknown route";
-};
-
-const createEndpoint = async (endpoint, method) => {
-  try {
-    const result = await Endpoint.create({ endpoint, method });
-    console.log(result);
-  } catch (e) {
-    console.log(e);
-  }
 };
 
 const updateEndpointOrCreateOne = async (endpoint, method) => {
@@ -45,6 +36,11 @@ export const recordEndpoint = async (req, res, next) => {
   try {
     const method = req.method;
     const route = getRoute(req);
+    if (route === "unknown route") {
+      res.status(NOT_FOUND);
+      next(new Error("Route Not Exist!"));
+      return;
+    }
     await updateEndpointOrCreateOne(route, method);
     next();
   } catch (e) {
@@ -58,6 +54,7 @@ export const getAllEndpoint = async (req, res, next) => {
   try {
     const result = await Endpoint.find();
     res.status(OK).send({ endpoints: result, message: "Success" });
+    next();
   } catch (e) {
     res.status(INTERNAL_SERVER_ERROR);
     next(e);

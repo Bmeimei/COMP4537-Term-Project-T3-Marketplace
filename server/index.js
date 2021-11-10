@@ -5,6 +5,7 @@ import { INTERNAL_SERVER_ERROR, OK } from "./status.js";
 import adminRouter from "./route/admin.js";
 import mongoose from "mongoose";
 import { recordEndpoint } from "./controller/endpoint.js";
+import endpoint from "./route/endpoint.js";
 
 dotenv.config();
 
@@ -43,5 +44,6 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/admin", adminRouter);
+app.use("/endpoint", endpoint);
 app.use(recordEndpoint);
 app.use(errorHandler);
