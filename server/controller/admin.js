@@ -39,6 +39,7 @@ export const loginController = async (req, res, next) => {
       { expiresIn: "1d" }
     );
     res.status(OK).send({ message: "Success!", token });
+    next();
   } catch (e) {
     next(e);
   }
@@ -77,6 +78,7 @@ export const signupController = async (req, res, next) => {
       { expiresIn: "1d" }
     );
     res.status(OK).send({ username, message: "Success!", token });
+    next();
   } catch (e) {
     res.status(INTERNAL_SERVER_ERROR);
     next(e);

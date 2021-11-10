@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { INTERNAL_SERVER_ERROR, OK } from "./status.js";
 import adminRouter from "./route/admin.js";
 import mongoose from "mongoose";
+import { recordEndpoint } from "./controller/endpoint.js";
 
 dotenv.config();
 
@@ -34,11 +35,13 @@ const errorHandler = (err, req, res, next) => {
   next();
 };
 
-app.get("/", (req, res) => {
+app.get("/", (req, res, next) => {
   res.status(OK).send({
     message: "Hey man!"
   });
+  next();
 });
 
 app.use("/admin", adminRouter);
+app.use(recordEndpoint);
 app.use(errorHandler);
