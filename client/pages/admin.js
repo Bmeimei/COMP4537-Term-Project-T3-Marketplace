@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
+import { loginRequest } from "../src/api/admin.js";
 
 const Container = styled.div`
   display: flex;
@@ -73,6 +73,7 @@ const Button = styled.button`
 const ErrorMessage = styled.h4`
   color: red;
 `;
+
 const Admin = () => {
   const {
     register,
@@ -82,12 +83,7 @@ const Admin = () => {
   const onSubmit = async ({ username, password }) => {
     try {
       setErrorMessage("");
-      const data = (
-        await axios.post("http://localhost:5050/admin/login", {
-          username,
-          password
-        })
-      ).data;
+      const data = (await loginRequest(username, password)).data;
       console.log("Data", data);
       setCookies("adminToken", data.token, { path: "/" });
     } catch (e) {
