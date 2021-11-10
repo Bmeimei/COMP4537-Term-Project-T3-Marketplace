@@ -13,7 +13,7 @@ const getRoute = (req) => {
 
 const updateEndpointOrCreateOne = async (endpoint, method) => {
   try {
-    const result = await Endpoint.findOneAndUpdate(
+    await Endpoint.findOneAndUpdate(
       { endpoint, method },
       {
         $inc: {
@@ -26,7 +26,6 @@ const updateEndpointOrCreateOne = async (endpoint, method) => {
         setDefaultsOnInsert: true
       }
     ).exec();
-    console.log(result);
   } catch (e) {
     console.log(e);
   }
