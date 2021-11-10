@@ -1,28 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { INTERNAL_SERVER_ERROR, OK } from "./status.js";
+import adminRouter from "./route/admin.js";
+import mongoose from "mongoose";
 
 dotenv.config();
-
-// HTTP Status
-
-// Fine
-const OK = 200;
-
-// Method Not Allowed (Not GET or POST method)
-const METHOD_NOT_ALLOWED = 405;
-
-// Word not in records
-const NOT_FOUND = 404;
-
-// Word already exist
-const ALREADY_EXIST = 403;
-
-// Miss Params like word or definition
-const BAD_REQUEST = 400;
-
-// Server get the problems
-const INTERNAL_SERVER_ERROR = 500;
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -33,12 +16,29 @@ app.use(
   })
 );
 
+mongoose
+  .connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => app.listen(PORT, () => console.log(`Listening On Port ${PORT}`)))
+  .catch((e) => console.log(e));
+
+/* eslint-disable no-unused-vars */
+const errorHandler = (err, req, res, next) => {
+  const statusCode = res.statusCode !== OK ? res.statusCode : INTERNAL_SERVER_ERROR;
+  res.status(statusCode);
+  res.send({
+    message: err.message
+  });
+  next();
+};
+
 app.get("/", (req, res) => {
   res.status(OK).send({
     message: "Hey man!"
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on PORT: ${PORT}`);
-});
+app.use("/admin", adminRouter);
+app.use(errorHandler);

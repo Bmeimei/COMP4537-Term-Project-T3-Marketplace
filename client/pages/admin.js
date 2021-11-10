@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
+import { useCookies } from "react-cookie";
 
 const Container = styled.div`
   display: flex;
@@ -78,12 +79,35 @@ const Admin = () => {
     handleSubmit,
     formState: { errors }
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async ({ username, password }) => {
+    try {
+      const data = (
+        await axios.post("http://localhost:5050/admin/login", {
+          username,
+          password
+        })
+      ).data;
+      console.log("Data", data);
+      setCookies("adminToken", data.token, { path: "/" });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const [cookies, setCookies] = useCookies(["adminToken"]);
+
+  useEffect(() => {
+    console.log("Token", cookies.adminToken);
+  }, [cookies.adminToken]);
 
   return (
     <Container>
       <h1>Admin Login</h1>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        method="POST"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(onSubmit)(e);
+        }}>
         <Field isError={errors.username}>
           <Image src="/nickname.png" width="32" height="32" alt="username" title="username" />
           <Input placeholder="Username" type="text" {...register("username", { required: true })} />
