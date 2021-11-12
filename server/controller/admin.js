@@ -5,7 +5,7 @@ import {
   INTERNAL_SERVER_ERROR,
   INVALID_CREDENTIAL,
   OK
-} from "../status.js";
+} from "../statusCode.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";

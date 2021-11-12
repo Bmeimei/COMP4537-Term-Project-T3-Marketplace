@@ -1,5 +1,5 @@
 import Endpoint from "../model/endpoint.js";
-import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from "../status.js";
+import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from "../statusCode.js";
 
 const getRoute = (req) => {
   const route = req.route ? req.route.path : "";

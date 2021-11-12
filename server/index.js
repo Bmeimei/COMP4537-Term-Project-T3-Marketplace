@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { INTERNAL_SERVER_ERROR, OK } from "./status.js";
+import { INTERNAL_SERVER_ERROR, OK } from "./statusCode.js";
 import adminRouter from "./route/admin.js";
 import mongoose from "mongoose";
 import { recordEndpoint } from "./controller/endpoint.js";

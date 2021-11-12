@@ -1,5 +1,6 @@
 import express from "express";
 import { getAllEndpoint } from "../controller/endpoint.js";
+import { adminAuth } from "../auth.js";
 
 const endpointRouter = express.Router();
 
@@ -8,6 +9,6 @@ endpointRouter.use((req, res, next) => {
   next();
 });
 
-endpointRouter.get("/", getAllEndpoint);
+endpointRouter.get("/", adminAuth, getAllEndpoint);
 
 export default endpointRouter;
