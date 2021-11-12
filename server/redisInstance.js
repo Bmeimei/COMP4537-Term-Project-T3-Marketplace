@@ -1,6 +1,6 @@
 import redis from "redis";
 
-export const DEFAULT_EXPIRATION_TIME = 3600;
+export const DEFAULT_EXPIRATION_TIME = 600;
 
 class Redis {
   constructor() {

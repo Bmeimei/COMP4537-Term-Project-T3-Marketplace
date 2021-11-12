@@ -25,6 +25,7 @@
     "eslint-config-next": "^12.0.3",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react-hooks": "^4.2.1-alpha-a44a7a2a3-20211111",
     "prettier": "^2.4.1"
   }
 }
