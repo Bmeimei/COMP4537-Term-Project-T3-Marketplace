@@ -18,5 +18,6 @@
     <orderEntry type="library" name="@types/express" level="application" />
     <orderEntry type="library" name="@types/bcrypt" level="application" />
     <orderEntry type="library" name="@types/jsonwebtoken" level="application" />
+    <orderEntry type="library" name="@types/redis" level="application" />
   </component>
 </module>

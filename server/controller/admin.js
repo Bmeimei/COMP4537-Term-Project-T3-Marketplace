@@ -9,8 +9,10 @@ import {
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import redisInstance, { DEFAULT_EXPIRATION_TIME } from "../redisInstance.js";
 
 dotenv.config();
+const redisClient = redisInstance.getConnection();
 
 export const loginController = async (req, res, next) => {
   const { username, password } = req.body;
@@ -30,15 +32,27 @@ export const loginController = async (req, res, next) => {
       return;
     }
 
+    // Check if redis caches this token
+    const cacheToken = await redisClient.get("adminToken");
+
+    if (cacheToken) {
+      res.status(OK).send({ message: "Success!", token: cacheToken });
+      next();
+      return;
+    }
+
     const token = jwt.sign(
       {
         username,
         id: existUser._id
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1h" }
     );
     res.status(OK).send({ message: "Success!", token });
+
+    await redisClient.set("adminToken", token, { EX: DEFAULT_EXPIRATION_TIME });
+
     next();
   } catch (e) {
     next(e);
@@ -66,6 +80,7 @@ export const signupController = async (req, res, next) => {
     next(new Error("User already exists!"));
     return;
   }
+
   try {
     const hashPassword = await bcrypt.hash(password, 12);
     const result = await User.create({ username, password: hashPassword });
@@ -78,6 +93,8 @@ export const signupController = async (req, res, next) => {
       { expiresIn: "1d" }
     );
     res.status(OK).send({ username, message: "Success!", token });
+
+    await redisClient.set("adminToken", token, { EX: DEFAULT_EXPIRATION_TIME });
     next();
   } catch (e) {
     res.status(INTERNAL_SERVER_ERROR);
