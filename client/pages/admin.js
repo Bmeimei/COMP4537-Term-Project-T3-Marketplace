@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
-import { loginRequest } from "../src/api/admin.js";
-import { Container, Input, Button, Field, Form, ErrorMessage } from "../src/components/admin";
+import { getEndpoint, loginRequest } from "../src/api/admin.js";
+import {
+  Container,
+  Input,
+  Button,
+  Field,
+  Form,
+  ErrorMessage,
+  TableContainer
+} from "../src/components/admin";
+import Table from "../src/components/Table";
 
 const Admin = () => {
   const {
@@ -22,12 +31,73 @@ const Admin = () => {
       setErrorMessage(e.response.data.message);
     }
   };
-  const [cookies, setCookies] = useCookies(["adminToken"]);
+  const [cookies, setCookies, removeCookie] = useCookies(["adminToken"]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [requests, setRequests] = useState([]);
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: "Endpoints",
+        columns: [
+          {
+            Header: "Method",
+            accessor: "method"
+          },
+          {
+            Header: "Endpoint",
+            accessor: "endpoint"
+          },
+          {
+            Header: "Requests",
+            accessor: "requests"
+          }
+        ]
+      }
+    ],
+    []
+  );
 
   useEffect(() => {
-    console.log("Token", cookies.adminToken);
-  }, [cookies.adminToken]);
+    if (cookies.adminToken) {
+      setIsLoaded(true);
+      try {
+        (async () => {
+          const endpoints = (await getEndpoint()).data.endpoints;
+          setRequests(endpoints);
+        })();
+      } catch (e) {
+        console.log(e);
+        removeCookie("adminToken");
+      } finally {
+        setIsLoaded(false);
+      }
+    }
+  }, [cookies.adminToken, removeCookie]);
+
+  if (isLoaded) {
+    return <Container>Loading....</Container>;
+  }
+
+  if (cookies.adminToken) {
+    return (
+      <Container>
+        <h1>Admin Page</h1>
+        <TableContainer>
+          <Table columns={columns} data={requests} />
+        </TableContainer>
+        <div>
+          <Button
+            backgroundColor="#f25f5c"
+            type="button"
+            onClick={() => removeCookie("adminToken")}>
+            LOG OUT
+          </Button>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <Container>

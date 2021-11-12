@@ -57,7 +57,7 @@ export const Button = styled.button`
   line-height: 1.5rem;
   padding-block: 0.2rem;
   cursor: pointer;
-  background-color: #00b5ad;
+  background-color: ${({ backgroundColor }) => backgroundColor || "#00b5ad"};
   box-shadow: inset 0 0 0 0 rgb(34 36 38 / 15%);
   color: #ffffff;
   text-shadow: none;
@@ -67,4 +67,33 @@ export const Button = styled.button`
 
 export const ErrorMessage = styled.h4`
   color: red;
+`;
+
+export const TableContainer = styled.div`
+  padding: 1rem;
+
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+
+      :last-child {
+        border-right: 0;
+      }
+    }
+  }
 `;
