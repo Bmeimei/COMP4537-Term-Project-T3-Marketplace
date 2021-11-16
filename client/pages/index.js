@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import Header from "../src/components/Header";
+import SideNav from "../src/components/SideNav";
+import Post from "../src/components/Post";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -6,6 +9,24 @@ const Container = styled.div`
   margin-inline: auto;
 `;
 
+const PageLayout = styled.div``;
+
+const Posts = styled.div``;
+
 export default function Home() {
-  return <Container>Hello World!!</Container>;
+  const posts = [{}, {}, {}];
+
+  return (
+    <Container>
+      <Header />
+      <PageLayout>
+        <SideNav />
+        <Posts>
+          <Post />
+          <Post />
+          <Post />
+        </Posts>
+      </PageLayout>
+    </Container>
+  );
 }

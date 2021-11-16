@@ -10,6 +10,6 @@ adminRouter.use((req, res, next) => {
 
 adminRouter.post("/login", loginController);
 
-adminRouter.post("/signup", signupController);
+adminRouter.post("/signup.js", signupController);
 
 export default adminRouter;

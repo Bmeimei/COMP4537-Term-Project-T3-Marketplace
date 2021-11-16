@@ -10,3 +10,36 @@ To start the project:
 2. ```npm install && npm run dev```
 3. ```cd client```
 4. ```yarn install && yarn dev```
+
+
+
+## Client
+
+
+
+### `/`
+
+
+
+### `/login` 
+
+
+
+### `/signup`
+
+
+
+### `/me`
+
+
+
+### `/addItem`
+
+
+
+### `/item/{id}`
+
+
+
+
+
