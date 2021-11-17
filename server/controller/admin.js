@@ -1,4 +1,4 @@
-import User from "../model/admin.js";
+import AdminUser from "../model/admin.js";
 import {
   ALREADY_EXIST,
   BAD_REQUEST,
@@ -18,7 +18,7 @@ export const loginController = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const existUser = await User.findOne({ username });
+    const existUser = await AdminUser.findOne({ username });
     if (!existUser) {
       res.status(INVALID_CREDENTIAL);
       next(new Error(`User name with ${username} does not exist!`));
@@ -46,7 +46,7 @@ export const loginController = async (req, res, next) => {
         username,
         id: existUser._id
       },
-      process.env.ACCESS_TOKEN_SECRET,
+      process.env.ADMIN_ACCESS_TOKEN_SECRET,
       { expiresIn: "1h" }
     );
     res.status(OK).send({ message: "Success!", token });
@@ -74,7 +74,7 @@ export const signupController = async (req, res, next) => {
     return;
   }
 
-  const oldUser = await User.findOne({ username });
+  const oldUser = await AdminUser.findOne({ username });
   if (oldUser) {
     res.status(ALREADY_EXIST);
     next(new Error("User already exists!"));
@@ -83,13 +83,13 @@ export const signupController = async (req, res, next) => {
 
   try {
     const hashPassword = await bcrypt.hash(password, 12);
-    const result = await User.create({ username, password: hashPassword });
+    const result = await AdminUser.create({ username, password: hashPassword });
     const token = jwt.sign(
       {
         username,
         id: result._id
       },
-      process.env.ACCESS_TOKEN_SECRET,
+      process.env.ADMIN_ACCESS_TOKEN_SECRET,
       { expiresIn: "1d" }
     );
     res.status(OK).send({ username, message: "Success!", token });
