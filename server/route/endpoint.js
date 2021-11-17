@@ -1,6 +1,6 @@
 import express from "express";
 import { getAllEndpoint } from "../controller/endpoint.js";
-import { adminAuth } from "../auth.js";
+import { adminAuth } from "../adminAuth.js";
 
 const endpointRouter = express.Router();
 

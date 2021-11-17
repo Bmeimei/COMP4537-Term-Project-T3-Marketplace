@@ -4,15 +4,15 @@ const Endpoint = mongoose.Schema(
   {
     endpoint: {
       type: String,
-      require: true
+      required: true
     },
     method: {
       type: String,
-      require: true
+      required: true
     },
     requests: {
       type: Number,
-      require: true,
+      required: true,
       default: 0
     }
   },
