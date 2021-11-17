@@ -4,7 +4,13 @@ import dotenv from "dotenv";
 import { INTERNAL_SERVER_ERROR, OK } from "./statusCode.js";
 import mongoose from "mongoose";
 import { recordEndpoint } from "./controller/endpoint.js";
-import { userRouter, adminRouter, itemRouter, endpointRouter } from "./route/index.js";
+import {
+  userRouter,
+  adminRouter,
+  itemRouter,
+  endpointRouter,
+  categoryRouter
+} from "./route/index.js";
 
 dotenv.config();
 
@@ -45,6 +51,7 @@ app.get("/", (req, res, next) => {
 app.use("/admin", adminRouter);
 app.use("/user", userRouter);
 app.use("/item", itemRouter);
+app.use("/category", categoryRouter);
 
 app.use("/endpoint", endpointRouter);
 app.use(recordEndpoint);

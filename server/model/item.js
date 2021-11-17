@@ -14,6 +14,14 @@ const Item = mongoose.Schema(
       type: String,
       required: true
     },
+    image: {
+      type: String,
+      required: true
+    },
+    isValid: {
+      type: Boolean,
+      default: true
+    },
     category: {
       type: mongoose.Types.ObjectId,
       ref: "Category",

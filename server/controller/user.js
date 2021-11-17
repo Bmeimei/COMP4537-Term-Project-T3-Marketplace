@@ -1,4 +1,4 @@
-import { User } from "../model/index.js";
+import { Item, User } from "../model/index.js";
 import { ALREADY_EXIST, BAD_REQUEST, INVALID_CREDENTIAL, NOT_FOUND, OK } from "../statusCode.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -97,7 +97,7 @@ export const signupController = async (req, res, next) => {
     next();
     await redisClient.set("userToken", token, { EX: DEFAULT_EXPIRATION_TIME });
   } catch (e) {
-    if (e.code === 11000) {
+    if (e?.code === 11000) {
       res.status(ALREADY_EXIST);
       next(new Error("Email already exists!"));
       return;
@@ -114,17 +114,15 @@ export const getUserController = async (req, res, next) => {
     return;
   }
   try {
-    const user = await User.findOne({
-      _id: userId
-    })
-      .select("_id email username profile")
-      .exec();
+    // Add lean() so we can add items to the user
+    const user = await User.findById(userId).select("_id email username profile").lean().exec();
 
     if (!user) {
       res.status(NOT_FOUND);
       next(new Error("User Not Found!"));
       return;
     }
+    user.items = await Item.find({ user: userId }).select("-user").lean().exec();
     res.status(OK).send({
       user,
       message: "Success"
