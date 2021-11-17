@@ -1,10 +1,12 @@
 import { User } from "../model/index.js";
-import { ALREADY_EXIST, BAD_REQUEST, INVALID_CREDENTIAL, OK } from "../statusCode.js";
+import { ALREADY_EXIST, BAD_REQUEST, INVALID_CREDENTIAL, NOT_FOUND, OK } from "../statusCode.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import redisInstance, { DEFAULT_EXPIRATION_TIME } from "../redisInstance.js";
 
 dotenv.config();
+const redisClient = redisInstance.getConnection();
 
 const isFieldValid = (field, fieldName, res, next) => {
   if (field !== 0 && !field) {
@@ -15,7 +17,49 @@ const isFieldValid = (field, fieldName, res, next) => {
   return true;
 };
 
-export const loginController = async (req, res, next) => {};
+export const loginController = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    const existUser = await User.findOne({ email });
+
+    if (!existUser) {
+      res.status(INVALID_CREDENTIAL);
+      next(new Error(`User Email with ${email} does not exist!`));
+      return;
+    }
+    const comparePassword = await bcrypt.compare(password, existUser.password);
+
+    if (!comparePassword) {
+      res.status(INVALID_CREDENTIAL);
+      next(new Error("Password is not correct!"));
+      return;
+    }
+
+    // Check if redis caches this token
+    const cacheToken = await redisClient.get("userToken");
+
+    if (cacheToken) {
+      res.status(OK).send({ message: "Success!", token: cacheToken });
+      next();
+      return;
+    }
+    const token = jwt.sign(
+      {
+        email,
+        id: existUser._id
+      },
+      process.env.USER_ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "1d"
+      }
+    );
+    res.status(OK).send({ message: "Success!", token });
+    next();
+    await redisClient.set("userToken", token, { EX: DEFAULT_EXPIRATION_TIME });
+  } catch (e) {
+    next(e);
+  }
+};
 
 export const signupController = async (req, res, next) => {
   const { email, username, password } = req.body;
@@ -37,7 +81,7 @@ export const signupController = async (req, res, next) => {
     });
     const token = jwt.sign(
       {
-        username,
+        email,
         id: result._id
       },
       process.env.USER_ACCESS_TOKEN_SECRET,
@@ -51,6 +95,7 @@ export const signupController = async (req, res, next) => {
       token
     });
     next();
+    await redisClient.set("userToken", token, { EX: DEFAULT_EXPIRATION_TIME });
   } catch (e) {
     if (e.code === 11000) {
       res.status(ALREADY_EXIST);
@@ -61,4 +106,30 @@ export const signupController = async (req, res, next) => {
   }
 };
 
-export const getUserController = async (req, res, next) => {};
+export const getUserController = async (req, res, next) => {
+  const userId = req?.userId;
+  if (userId !== 0 && !userId) {
+    res.status(INVALID_CREDENTIAL);
+    next(new Error("Missing User Id!"));
+    return;
+  }
+  try {
+    const user = await User.findOne({
+      _id: userId
+    })
+      .select("_id email username profile")
+      .exec();
+
+    if (!user) {
+      res.status(NOT_FOUND);
+      next(new Error("User Not Found!"));
+      return;
+    }
+    res.status(OK).send({
+      user,
+      message: "Success"
+    });
+  } catch (e) {
+    next(e);
+  }
+};

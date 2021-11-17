@@ -8,9 +8,8 @@ dotenv.config();
 export const auth = async (req, res, next) => {
   try {
     const token = req.headers?.authorization.split(" ")[1];
-    const { id: userId, email } = jwt.verify(token, process.env.USER_ACCESS_TOKEN_SECRET);
-    req.body.userId = userId;
-    req.body.email = email;
+    const { id: userId } = jwt.verify(token, process.env.USER_ACCESS_TOKEN_SECRET);
+    req.userId = userId;
     next();
   } catch (e) {
     res.status(INVALID_CREDENTIAL);

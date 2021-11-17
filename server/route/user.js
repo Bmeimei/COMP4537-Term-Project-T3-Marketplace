@@ -1,5 +1,6 @@
 import express from "express";
 import { getUserController, loginController, signupController } from "../controller/user.js";
+import { auth } from "../auth.js";
 
 const userRouter = express.Router();
 
@@ -8,7 +9,7 @@ userRouter.use((req, res, next) => {
   next();
 });
 
-userRouter.get("/", getUserController);
+userRouter.get("/", auth, getUserController);
 userRouter.post("/login", loginController);
 userRouter.post("/signup", signupController);
 
