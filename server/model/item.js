@@ -4,25 +4,25 @@ const Item = mongoose.Schema(
   {
     name: {
       type: String,
-      require: true
+      required: true
     },
     price: {
       type: Number,
-      require: true
+      required: true
     },
     description: {
       type: String,
-      require: true
+      required: true
     },
     category: {
       type: mongoose.Types.ObjectId,
       ref: "Category",
-      require: true
+      required: true
     },
     user: {
       type: mongoose.Types.ObjectId,
       ref: "User",
-      require: true
+      required: true
     }
   },
   {
