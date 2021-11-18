@@ -9,12 +9,13 @@ const StyleAppBar = styled(AppBar)`
   position: relative;
 `;
 
-const MenuButton = styled.div`
+const MenuButton = styled.ul`
   margin-left: 2rem;
 `;
 
 const Li = styled.li`
   list-style: none;
+  display: block;
 `;
 
 const Header = ({ headersData }) => {
@@ -31,65 +32,6 @@ const Header = ({ headersData }) => {
       )),
     [headersData]
   );
-
-  // const getMenuButtons = () => {
-  //   return headersData.map(({ label, page }) => {
-  //     return (
-  //       <Link href={page}>
-  //         <Button
-  //           {...{
-  //             key: label,
-  //             color: "inherit"
-  //             // to: href,
-  //             // component: Link,
-  //           }}>
-  //           {label}
-  //         </Button>
-  //       </Link>
-  //     );
-  //   });
-  // };
-
-  // const getMenuButtons = () => {
-  //   return (
-  //     <ul>
-  //       {headersData.map(({label, href}) => {
-  //         console.log(href)
-  //         return (
-  //           <li>
-  //             <Link href="/login">
-  //               <Button
-  //                 {...{
-  //                   key: label,
-  //                   color: "inherit",
-  //                   to: href,
-  //                   component: Link,
-  //                 }}
-  //               >
-  //                 {label}
-  //               </Button>
-  //             </Link>
-  //           </li>
-  //         )
-  //       })}
-  //     </ul>
-  //   )
-  // }
-
-  // const displayDesktop = () => {
-  //   return (
-  //     <Toolbar>
-  //       <MarketplaceLogo />
-  //       <div
-  //         {...{
-  //           className: menuButton
-  //         }}>
-  //         {getMenuButtons()}
-  //       </div>
-  //     </Toolbar>
-  //   );
-  // };
-
   return (
     <header>
       <StyleAppBar position="fixed">
