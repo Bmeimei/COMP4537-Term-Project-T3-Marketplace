@@ -14,11 +14,11 @@ const Container = styled.div`
 const headersData = [
   {
     label: "Listings",
-    page: ""
+    page: "/"
   },
   {
     label: "My Account",
-    page: "/account"
+    page: "/me"
   },
   {
     label: "Log In",
@@ -30,7 +30,6 @@ export default function Home() {
   return (
     <Container>
       <Header headersData={headersData} />
-      {/* <PageLayout> */}
       <Box sx={{ display: "flex" }}>
         <SideNav />
         <ProductBox />

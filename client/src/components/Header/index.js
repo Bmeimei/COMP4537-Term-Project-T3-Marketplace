@@ -9,19 +9,34 @@ const StyleAppBar = styled(AppBar)`
   position: relative;
 `;
 
+const StyleToolBar = styled(Toolbar)`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const Ul = styled.ul`
   list-style: none;
   display: flex;
   flex-direction: row;
   gap: 2rem;
+  height: 1.2rem;
 `;
 
 const Li = styled.li`
   list-style: none;
   display: block;
+  font-size: 1.1rem;
 `;
 
-const ButtonLink = styled(Button)``;
+const ButtonLink = styled(Button)`
+  color: inherit;
+  text-decoration: none;
+  padding-bottom: 0.2rem;
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+`;
 
 const Header = ({ headersData }) => {
   const displayMenuButtons = useCallback(
@@ -29,9 +44,6 @@ const Header = ({ headersData }) => {
       headersData.map(({ label, page }, index) => (
         <Li key={index}>
           <Link href={page} passHref>
-            {/*<ListItem button component="a">*/}
-            {/*  <ListItemText>{label}</ListItemText>*/}
-            {/*</ListItem>*/}
             <ButtonLink as="a">{label}</ButtonLink>
           </Link>
         </Li>
@@ -41,10 +53,10 @@ const Header = ({ headersData }) => {
   return (
     <header>
       <StyleAppBar position="fixed">
-        <Toolbar>
+        <StyleToolBar>
           <MarketplaceLogo />
           <Ul>{displayMenuButtons()}</Ul>
-        </Toolbar>
+        </StyleToolBar>
       </StyleAppBar>
     </header>
   );
