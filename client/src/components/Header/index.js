@@ -1,7 +1,7 @@
 import React from "react";
 import {AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { makeStyles } from "@material-ui/styles";
-import {Link} from 'next/link';
+import Link from 'next/link';
 import head from "next/head";
 
 
@@ -19,36 +19,64 @@ const Header = () => {
   const headersData = [
     {
       label: "Listings",
-      href: "../Post/index.js",
+      page: "",
     },
     {
       label: "My Account",
-      href: "/account",
+      page: "/account",
     },
     {
       label: "Log In",
-      href: "localhost:3000/login",
+      page: "/login",
     },
   ];
   
   const getMenuButtons = () => {
-    return headersData.map(({label, href}) => {
+    return headersData.map(({label, page}) => {
       return (
-   
+        <Link href={page}>
           <Button
             {...{
               key: label,
               color: "inherit",
-              to: href,
-              component: Link,
+              // to: href,
+              // component: Link,
             }}
           >
             {label}
           </Button>
-     
+        </Link>
+
       )
     })
   }
+
+  // const getMenuButtons = () => {
+  //   return (
+  //     <ul>
+  //       {headersData.map(({label, href}) => {
+  //         console.log(href)
+  //         return (
+  //           <li>
+  //             <Link href="/login">
+  //               <Button
+  //                 {...{
+  //                   key: label,
+  //                   color: "inherit",
+  //                   to: href,
+  //                   component: Link,
+  //                 }}
+  //               >
+  //                 {label}
+  //               </Button>
+  //             </Link>
+  //           </li>
+  //         )
+  //       })}
+  //     </ul> 
+  //   )
+  // }
+
   const displayDesktop = () => {
     return (
       <Toolbar>
