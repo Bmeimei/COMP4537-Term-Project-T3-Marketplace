@@ -101,7 +101,9 @@ export const deleteItem = async (req, res, next) => {
   const userId = req.userId;
   try {
     const item = await Item.findById(id);
-    const originUserId = item.user;
+    const originUserId = item.user.toString();
+    console.log(originUserId);
+    console.log(userId);
     if (userId !== originUserId) {
       res.status(INVALID_CREDENTIAL);
       next(new Error("User Id doesn't match the Owner Id"));
