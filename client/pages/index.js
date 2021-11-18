@@ -3,8 +3,7 @@ import Header from "../src/components/Header";
 import SideNav from "../src/components/SideNav";
 import Post from "../src/components/Post";
 import ProductBox from "../src/components/ProductBox";
-import Box from '@mui/material/Box';
-
+import Box from "@mui/material/Box";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -12,24 +11,29 @@ const Container = styled.div`
   margin-inline: auto;
 `;
 
-const PageLayout = styled.div`
-
-
-`;
-
-const Posts = styled.div``;
+const headersData = [
+  {
+    label: "Listings",
+    page: "/"
+  },
+  {
+    label: "My Account",
+    page: "/me"
+  },
+  {
+    label: "Log In",
+    page: "/login"
+  }
+];
 
 export default function Home() {
-  const posts = [{}, {}, {}];
-
   return (
-      <Container>
-        <Header />
-        {/* <PageLayout> */}
-          <Box sx={{ display: 'flex' }}>
-            <SideNav />
-            <ProductBox />
-          </Box>
-      </Container>
+    <Container>
+      <Header headersData={headersData} />
+      <Box sx={{ display: "flex" }}>
+        <SideNav />
+        <ProductBox />
+      </Box>
+    </Container>
   );
 }
