@@ -58,7 +58,7 @@ const SideNav = () => {
       '& .MuiDrawer-paper': {
         width: drawerWidth,
         boxSizing: 'border-box',
-        zIndex: 0
+        zIndex: 0,
       },
     }}
     variant="permanent"

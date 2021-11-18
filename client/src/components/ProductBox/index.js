@@ -6,9 +6,9 @@ import Grid from '@mui/material/Grid';
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        width: "80vw",
-        marginLeft: "300px",
-        marginTop: "50px"
+        width: "100%",
+        marginLeft: "30px",
+        marginTop: "100px"
     }
 }))
 

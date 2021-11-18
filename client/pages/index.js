@@ -3,6 +3,7 @@ import Header from "../src/components/Header";
 import SideNav from "../src/components/SideNav";
 import Post from "../src/components/Post";
 import ProductBox from "../src/components/ProductBox";
+import Box from '@mui/material/Box';
 
 
 const Container = styled.div`
@@ -25,8 +26,10 @@ export default function Home() {
       <Container>
         <Header />
         {/* <PageLayout> */}
-          <SideNav />
-        <ProductBox />
+          <Box sx={{ display: 'flex' }}>
+            <SideNav />
+            <ProductBox />
+          </Box>
       </Container>
   );
 }
