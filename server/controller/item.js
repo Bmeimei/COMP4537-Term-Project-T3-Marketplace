@@ -63,6 +63,7 @@ export const getItemById = async (req, res, next) => {
       message: "Success",
       item
     });
+    next();
   } catch (e) {
     next(e);
   }
