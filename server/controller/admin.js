@@ -33,7 +33,7 @@ export const loginController = async (req, res, next) => {
     }
 
     // Check if redis caches this token
-    const cacheToken = await redisClient.get("adminToken");
+    const cacheToken = await redisClient.get(`adminToken ${username}`);
 
     if (cacheToken) {
       res.status(OK).send({ message: "Success!", token: cacheToken });
@@ -51,7 +51,7 @@ export const loginController = async (req, res, next) => {
     );
     res.status(OK).send({ message: "Success!", token });
 
-    await redisClient.set("adminToken", token, { EX: DEFAULT_EXPIRATION_TIME });
+    await redisClient.set(`adminToken ${username}`, token, { EX: DEFAULT_EXPIRATION_TIME });
 
     next();
   } catch (e) {
@@ -94,7 +94,7 @@ export const signupController = async (req, res, next) => {
     );
     res.status(OK).send({ username, message: "Success!", token });
 
-    await redisClient.set("adminToken", token, { EX: DEFAULT_EXPIRATION_TIME });
+    await redisClient.set(`adminToken ${username}`, token, { EX: DEFAULT_EXPIRATION_TIME });
     next();
   } catch (e) {
     res.status(INTERNAL_SERVER_ERROR);

@@ -36,7 +36,7 @@ export const loginController = async (req, res, next) => {
     }
 
     // Check if redis caches this token
-    const cacheToken = await redisClient.get("userToken");
+    const cacheToken = await redisClient.get(`userToken ${email}`);
 
     if (cacheToken) {
       res.status(OK).send({ message: "Success!", token: cacheToken });
@@ -55,7 +55,7 @@ export const loginController = async (req, res, next) => {
     );
     res.status(OK).send({ message: "Success!", token });
     next();
-    await redisClient.set("userToken", token, { EX: DEFAULT_EXPIRATION_TIME });
+    await redisClient.set(`userToken ${email}`, token, { EX: DEFAULT_EXPIRATION_TIME });
   } catch (e) {
     next(e);
   }
@@ -95,7 +95,7 @@ export const signupController = async (req, res, next) => {
       token
     });
     next();
-    await redisClient.set("userToken", token, { EX: DEFAULT_EXPIRATION_TIME });
+    await redisClient.set(`userToken ${email}`, token, { EX: DEFAULT_EXPIRATION_TIME });
   } catch (e) {
     if (e?.code === 11000) {
       res.status(ALREADY_EXIST);
