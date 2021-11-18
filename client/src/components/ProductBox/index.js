@@ -1,11 +1,14 @@
 import * as React from 'react';
 import ProductCard from '../ProductCard';
 import { makeStyles } from "@material-ui/styles";
+import Grid from '@mui/material/Grid';
 
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        width: "100vw"
+        width: "80vw",
+        marginLeft: "300px",
+        marginTop: "50px"
     }
 }))
 
@@ -46,14 +49,18 @@ const ProductBox = () => {
     ]
     return (
         <div className={container}>
+            <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 1, sm: 2, md: 20 }}>
             {productData.map(({price, title, location, imageUrl}) => (
+                <Grid item xs={1} sm={2} md={4}>
                 <ProductCard 
                     price={price}
                     title={title}
                     location={location}
                     image={imageUrl}
                 />
+                </Grid>
             ))}
+            </Grid>
         </div>
     )
 }

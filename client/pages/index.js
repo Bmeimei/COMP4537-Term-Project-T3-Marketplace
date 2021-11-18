@@ -24,10 +24,9 @@ export default function Home() {
   return (
       <Container>
         <Header />
-        <PageLayout>
+        {/* <PageLayout> */}
           <SideNav />
-          <ProductBox />
-        </PageLayout>
+        <ProductBox />
       </Container>
   );
 }
