@@ -97,7 +97,7 @@ export const addItem = async (req, res, next) => {
 };
 
 export const deleteItem = async (req, res, next) => {
-  const { id } = req.param;
+  const { id } = req.params;
   const userId = req.userId;
   try {
     const item = await Item.findById(id);
