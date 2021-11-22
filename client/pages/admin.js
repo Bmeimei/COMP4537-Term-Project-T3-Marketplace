@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
-import { getEndpoint, loginRequest } from "../src/api/admin.js";
+import { getEndpoint, adminLoginRequest } from "../src/api/admin.js";
 import {
   Container,
   Input,
@@ -23,7 +23,7 @@ const Admin = () => {
   const onSubmit = async ({ username, password }) => {
     try {
       setErrorMessage("");
-      const data = (await loginRequest(username, password)).data;
+      const data = (await adminLoginRequest(username, password)).data;
       console.log("Data", data);
       setCookies("adminToken", data.token, { path: "/", maxAge: 3600 });
     } catch (e) {

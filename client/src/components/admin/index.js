@@ -32,7 +32,7 @@ export const Field = styled.div`
   line-height: 1.5rem;
   cursor: pointer;
   border-radius: 5px;
-  border: 1px solid #ebebeb;
+  border: ${({ isError }) => (isError ? "2px solid red" : "1px solid #ebebeb")};
   &:focus-within {
     border-color: #be97c6;
   }

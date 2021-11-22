@@ -1,9 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const baseRequest = axios.create({ baseURL: process.env.REACT_APP_BACKEND_API });
+const adminBaseRequest = axios.create({ baseURL: process.env.REACT_APP_BACKEND_API });
+const userBaseRequest = axios.create({ baseURL: process.env.NEXT_PUBLIC_SERVER_URL });
 
-baseRequest.interceptors.request.use(async (req) => {
+adminBaseRequest.interceptors.request.use(async (req) => {
   const token = Cookies.get("adminToken");
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
@@ -11,4 +12,12 @@ baseRequest.interceptors.request.use(async (req) => {
   return req;
 });
 
-export default baseRequest;
+userBaseRequest.interceptors.request.use(async (req) => {
+  const token = Cookies.get("userToken");
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
+  }
+  return req;
+});
+
+export { adminBaseRequest, userBaseRequest };
