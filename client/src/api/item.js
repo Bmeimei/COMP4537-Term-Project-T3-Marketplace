@@ -14,7 +14,7 @@ export const deleteItemById = async (id) => {
 };
 
 export const addItem = async (name, price, description, category, image) => {
-  return await userBaseRequest.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/post`, {
+  return await userBaseRequest.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/item`, {
     name,
     price,
     description,

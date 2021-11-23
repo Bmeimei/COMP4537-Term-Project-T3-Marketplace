@@ -19,5 +19,16 @@
     <orderEntry type="library" name="@types/bcrypt" level="application" />
     <orderEntry type="library" name="@types/jsonwebtoken" level="application" />
     <orderEntry type="library" name="@types/redis" level="application" />
+    <orderEntry type="library" name="@types/mongoose-autopopulate" level="application" />
+    <orderEntry type="library" name="@types/mongoose-auto-increment" level="application" />
+    <orderEntry type="library" name="@types/bcrypt" level="application" />
+    <orderEntry type="library" name="@types/jsonwebtoken" level="application" />
+    <orderEntry type="library" name="@types/mongoose-deep-populate" level="application" />
+    <orderEntry type="library" name="@types/mongoose-paginate-v2" level="application" />
+    <orderEntry type="library" name="@types/eslint-config-prettier" level="application" />
+    <orderEntry type="library" name="@types/mongoose-promise" level="application" />
+    <orderEntry type="library" name="@types/mongoose-aggregate-paginate-v2" level="application" />
+    <orderEntry type="library" name="@types/express" level="application" />
+    <orderEntry type="library" name="@types/redis" level="application" />
   </component>
 </module>
