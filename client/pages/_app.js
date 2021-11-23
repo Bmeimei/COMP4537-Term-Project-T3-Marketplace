@@ -2,6 +2,7 @@ import "../styles/globals";
 import Head from "next/head";
 import Global from "../styles/globals";
 import { CookiesProvider } from "react-cookie";
+import { Toaster } from "react-hot-toast";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <CookiesProvider>
+        <Toaster />
         <Component {...pageProps} />
       </CookiesProvider>
     </>
