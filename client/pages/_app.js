@@ -3,17 +3,20 @@ import Head from "next/head";
 import Global from "../styles/globals";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { Toaster } from "react-hot-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getCurrentUser } from "../src/api/user";
+import Loading from "../src/components/Loading";
 
 function MyApp({ Component, pageProps }) {
   const [cookies, setCookies, removeCookie] = useCookies(["userToken"]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!cookies?.userToken) {
       localStorage.removeItem("user");
       return;
     }
+    setIsLoaded(true);
     (async () => {
       try {
         const data = (await getCurrentUser()).data;
@@ -23,6 +26,8 @@ function MyApp({ Component, pageProps }) {
       } catch (e) {
         removeCookie("userToken");
         localStorage.removeItem("user");
+      } finally {
+        setIsLoaded(false);
       }
     })();
   }, [cookies?.userToken, removeCookie]);
@@ -37,7 +42,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <CookiesProvider>
         <Toaster />
-        <Component {...pageProps} />
+        {isLoaded ? <Loading /> : <Component {...pageProps} />}
       </CookiesProvider>
     </>
   );
