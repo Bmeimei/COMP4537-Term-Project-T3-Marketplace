@@ -80,6 +80,10 @@ const Header = () => {
         {
           label: "My Account",
           page: "/me"
+        },
+        {
+          label: "Post Item",
+          page: "/addItem"
         }
       ]);
     }
