@@ -1,10 +1,32 @@
 import "../styles/globals";
 import Head from "next/head";
 import Global from "../styles/globals";
-import { CookiesProvider } from "react-cookie";
+import { CookiesProvider, useCookies } from "react-cookie";
 import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { getCurrentUser } from "../src/api/user";
 
 function MyApp({ Component, pageProps }) {
+  const [cookies, setCookies, removeCookie] = useCookies(["userToken"]);
+
+  useEffect(() => {
+    if (!cookies?.userToken) {
+      localStorage.removeItem("user");
+      return;
+    }
+    (async () => {
+      try {
+        const data = (await getCurrentUser()).data;
+        const user = data.user;
+        console.log("User:", user);
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (e) {
+        removeCookie("userToken");
+        localStorage.removeItem("user");
+      }
+    })();
+  }, [cookies?.userToken, removeCookie]);
+
   return (
     <>
       <Global />

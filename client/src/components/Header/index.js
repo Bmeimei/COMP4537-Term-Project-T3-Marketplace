@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AppBar, Toolbar, Button } from "@material-ui/core";
 import Link from "next/link";
 import MarketplaceLogo from "./logo";
 import styled from "styled-components";
+import { useCookies } from "react-cookie";
 
 const StyleAppBar = styled(AppBar)`
   position: relative;
@@ -36,9 +37,20 @@ const ButtonLink = styled(Button)`
     text-decoration: underline;
     text-underline-offset: 0.3rem;
   }
+  cursor: pointer;
 `;
 
-const Header = ({ headersData }) => {
+const Header = () => {
+  const [headersData, setHeadersData] = useState([]);
+  const [user, setUser] = useState(null);
+  const [cookies, setCookies, removeCookie] = useCookies(["userToken"]);
+
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    }
+  }, []);
+
   const displayMenuButtons = useCallback(
     () =>
       headersData.map(({ label, page }, index) => (
@@ -50,12 +62,55 @@ const Header = ({ headersData }) => {
       )),
     [headersData]
   );
+
+  useEffect(() => {
+    if (!user) {
+      setHeadersData([
+        {
+          label: "Log In",
+          page: "/login"
+        },
+        {
+          label: "Sign Up",
+          page: "/signup"
+        }
+      ]);
+    } else {
+      setHeadersData([
+        {
+          label: "My Account",
+          page: "/me"
+        }
+      ]);
+    }
+  }, [user]);
+
   return (
     <header>
       <StyleAppBar position="fixed">
         <StyleToolBar>
-          <MarketplaceLogo />
-          <Ul>{displayMenuButtons()}</Ul>
+          <Link href="/" passHref>
+            <ButtonLink>
+              <MarketplaceLogo />
+            </ButtonLink>
+          </Link>
+          <Ul>
+            {user && <Li>Hello, {user.username}</Li>}
+            {displayMenuButtons()}
+            {user && (
+              <Li>
+                <ButtonLink
+                  as="a"
+                  onClick={() => {
+                    setUser(null);
+                    localStorage.removeItem("user");
+                    removeCookie("userToken");
+                  }}>
+                  Log out
+                </ButtonLink>
+              </Li>
+            )}
+          </Ul>
         </StyleToolBar>
       </StyleAppBar>
     </header>
@@ -63,7 +118,3 @@ const Header = ({ headersData }) => {
 };
 
 export default Header;
-
-Header.propTypes = {
-  headersData: PropTypes.array.isRequired
-};

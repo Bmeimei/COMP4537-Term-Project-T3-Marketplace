@@ -8,9 +8,16 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Loading from "../src/components/Loading";
+import Header from "../src/components/Header";
 
 const SignUpContainer = styled.div`
   font-size: 1rem;
+`;
+
+const Wrapper = styled.div`
+  min-height: 100vh;
+  width: 100%;
+  margin-inline: auto;
 `;
 
 const Login = () => {
@@ -64,44 +71,47 @@ const Login = () => {
   }
 
   return (
-    <Container>
-      <h1>Login</h1>
-      <Form
-        method="POST"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(onSubmit)(e);
-        }}>
-        <Field isError={errors.username}>
-          <Image src="/email.png" width="32" height="32" alt="email" title="email" />
-          <Input placeholder="Email" type="text" {...register("email", { required: true })} />
-        </Field>
-        <Field isError={errors.password}>
-          <Image src="/locking.png" width="32" height="32" alt="password" title="password" />
-          <Input
-            placeholder="Password"
-            type="password"
-            {...register("password", { required: true })}
-          />
-        </Field>
-        <Button type="submit">Login</Button>
-      </Form>
-      {(() => {
-        if (errors?.username) {
-          return <ErrorMessage>Username can not be empty</ErrorMessage>;
-        }
-        if (errors?.password) {
-          return <ErrorMessage>Password can not be empty</ErrorMessage>;
-        }
-      })()}
-      {errorMessage !== "" ? <ErrorMessage>{errorMessage}</ErrorMessage> : <></>}
-      <SignUpContainer>
-        New to Marketplace?{" "}
-        <Link href="/signup">
-          <a>Sign up here</a>
-        </Link>
-      </SignUpContainer>
-    </Container>
+    <Wrapper>
+      <Header />
+      <Container>
+        <h1>Login</h1>
+        <Form
+          method="POST"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmit)(e);
+          }}>
+          <Field isError={errors.username}>
+            <Image src="/email.png" width="32" height="32" alt="email" title="email" />
+            <Input placeholder="Email" type="text" {...register("email", { required: true })} />
+          </Field>
+          <Field isError={errors.password}>
+            <Image src="/locking.png" width="32" height="32" alt="password" title="password" />
+            <Input
+              placeholder="Password"
+              type="password"
+              {...register("password", { required: true })}
+            />
+          </Field>
+          <Button type="submit">Login</Button>
+        </Form>
+        {(() => {
+          if (errors?.username) {
+            return <ErrorMessage>Username can not be empty</ErrorMessage>;
+          }
+          if (errors?.password) {
+            return <ErrorMessage>Password can not be empty</ErrorMessage>;
+          }
+        })()}
+        {errorMessage !== "" ? <ErrorMessage>{errorMessage}</ErrorMessage> : <></>}
+        <SignUpContainer>
+          New to Marketplace?{" "}
+          <Link href="/signup">
+            <a>Sign up here</a>
+          </Link>
+        </SignUpContainer>
+      </Container>
+    </Wrapper>
   );
 };
 export default Login;
