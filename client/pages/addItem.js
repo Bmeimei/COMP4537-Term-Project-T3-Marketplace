@@ -13,6 +13,7 @@ import axios from "axios";
 import Image from "next/image";
 import { addItem } from "../src/api/item";
 import { toast } from "react-hot-toast";
+import Loading from "../src/components/Loading";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -309,14 +310,7 @@ const AddItem = () => {
   );
 
   if (isLoaded) {
-    return (
-      <Container>
-        <Header headersData={headersData} />
-        <LoadingContainer>
-          <CircularProgress color="inherit" />
-        </LoadingContainer>
-      </Container>
-    );
+    return <Loading />;
   }
 
   return (

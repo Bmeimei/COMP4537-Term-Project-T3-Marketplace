@@ -7,6 +7,7 @@ import { getCurrentUser, signupRequest } from "../src/api/user";
 import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Loading from "../src/components/Loading";
 
 const SignUpContainer = styled.div`
   font-size: 1rem;
@@ -59,7 +60,7 @@ const Signup = () => {
   }, [cookies.userToken, removeCookie, router]);
 
   if (isLoaded) {
-    return <Container>Loading...</Container>;
+    return <Loading />;
   }
 
   return (
