@@ -21,31 +21,35 @@ const drawerWidth = 240;
 const useStyles = makeStyles(() => ({
   drawer: {
     marginTop: "10px"
+  },
+  anchor: {
+    textDecoration: "none",
+    color: "black"
   }
 }))
 
 const SideNav = () => {
-  const {drawer} = useStyles();
+  const {drawer, anchor} = useStyles();
 
   const sideNavData = [
     {
       label: "Electronics",
-      href: "../Post/index.js",
+      href: "#electronics",
       icon: <SmartphoneIcon/>
     },
     {
       label: "Vehicles",
-      href: "/account",
+      href: "#vehicles",
       icon: <DirectionsCarIcon/>
     },
     {
       label: "Pet Supplies",
-      href: "/logout",
+      href: "#pet-supplies",
       icon: <PetsIcon />
     },
     {
       label: "Hobbies",
-      href: "/logout",
+      href: "#hobbies",
       icon: <GestureIcon />
     },
   ];
@@ -71,12 +75,14 @@ const SideNav = () => {
     <Divider />
     <List>
       {sideNavData.map(({label, href, icon}) => (
-        <ListItem button key={label}>
-          <ListItemIcon>
-            {icon}
-          </ListItemIcon>
-          <ListItemText primary={label} />
-        </ListItem>
+        <a href={href} className={anchor}>
+          <ListItem button key={label}>
+            <ListItemIcon>
+              {icon}
+            </ListItemIcon>
+            <ListItemText primary={label} />
+          </ListItem>
+        </a>
       ))}
     </List>
   </Drawer>
