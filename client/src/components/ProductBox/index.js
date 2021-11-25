@@ -14,13 +14,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-let vehicle = [];
-
-
 const ProductBox = ({allItems}) => {
     const [isLoading, setIsLoading] = useState(true);
     const {container} = useStyles();
-    const [items, setItems] = useState();
+
     const [electronics, setElectronics] = useState([]);
     const [vehicles, setVehicles] = useState([]);
     const [petSupplies, setPetSupplies] = useState([]);
