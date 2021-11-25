@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import Header from "../src/components/Header";
 import SideNav from "../src/components/SideNav";
-import Post from "../src/components/Post";
 import ProductBox from "../src/components/ProductBox";
 import Box from "@mui/material/Box";
+import { useEffect, useState } from "react";
+import Loading from "../src/components/Loading";
+import { getItemsGroupedByCategories } from "../src/api/category";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -11,28 +13,34 @@ const Container = styled.div`
   margin-inline: auto;
 `;
 
-const headersData = [
-  {
-    label: "Listings",
-    page: "/"
-  },
-  {
-    label: "My Account",
-    page: "/me"
-  },
-  {
-    label: "Log In",
-    page: "/login"
-  }
-];
-
 export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setIsLoaded(true);
+      try {
+        const productsData = (await getItemsGroupedByCategories()).data.categories;
+        setProducts(productsData);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoaded(false);
+      }
+    })();
+  }, []);
+
+  if (isLoaded) {
+    return <Loading />;
+  }
+
   return (
     <Container>
-      <Header headersData={headersData} />
+      <Header />
       <Box sx={{ display: "flex" }}>
-        <SideNav />
-        <ProductBox />
+        <SideNav products={products} />
+        <ProductBox products={products} />
       </Box>
     </Container>
   );

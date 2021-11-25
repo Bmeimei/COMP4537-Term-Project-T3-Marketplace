@@ -7,7 +7,10 @@ import { getCurrentUser } from "../../api/user";
 import { useCookies } from "react-cookie";
 
 const StyleAppBar = styled(AppBar)`
-  position: relative;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  align-content: center;
 `;
 
 const StyleToolBar = styled(Toolbar)`
@@ -98,34 +101,32 @@ const Header = () => {
   }, [user]);
 
   return (
-    <header>
-      <StyleAppBar position="fixed">
-        <StyleToolBar>
-          <Link href="/" passHref>
-            <ButtonLink>
-              <MarketplaceLogo />
-            </ButtonLink>
-          </Link>
-          <Ul>
-            {user && <Li>Hello, {user.username}</Li>}
-            {displayMenuButtons()}
-            {user && (
-              <Li>
-                <ButtonLink
-                  as="a"
-                  onClick={() => {
-                    setUser(null);
-                    localStorage.removeItem("user");
-                    removeCookie("userToken");
-                  }}>
-                  Log out
-                </ButtonLink>
-              </Li>
-            )}
-          </Ul>
-        </StyleToolBar>
-      </StyleAppBar>
-    </header>
+    <StyleAppBar position="sticky">
+      <StyleToolBar>
+        <Link href="/" passHref>
+          <ButtonLink>
+            <MarketplaceLogo />
+          </ButtonLink>
+        </Link>
+        <Ul>
+          {user && <Li>Hello, {user.username}</Li>}
+          {displayMenuButtons()}
+          {user && (
+            <Li>
+              <ButtonLink
+                as="a"
+                onClick={() => {
+                  setUser(null);
+                  localStorage.removeItem("user");
+                  removeCookie("userToken");
+                }}>
+                Log out
+              </ButtonLink>
+            </Li>
+          )}
+        </Ul>
+      </StyleToolBar>
+    </StyleAppBar>
   );
 };
 
