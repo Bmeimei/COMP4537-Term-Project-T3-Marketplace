@@ -1,9 +1,9 @@
-import PropTypes from "prop-types";
 import React, { useCallback, useEffect, useState } from "react";
 import { AppBar, Toolbar, Button } from "@material-ui/core";
 import Link from "next/link";
 import MarketplaceLogo from "./logo";
 import styled from "styled-components";
+import { getCurrentUser } from "../../api/user";
 import { useCookies } from "react-cookie";
 
 const StyleAppBar = styled(AppBar)`
@@ -46,10 +46,18 @@ const Header = () => {
   const [cookies, setCookies, removeCookie] = useCookies(["userToken"]);
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-      setUser(JSON.parse(localStorage.getItem("user")));
+    if (cookies?.userToken) {
+      (async () => {
+        try {
+          const currentUser = (await getCurrentUser()).data.user;
+          setUser(currentUser);
+        } catch (e) {
+          console.log("User Not login");
+          removeCookie("userToken");
+        }
+      })();
     }
-  }, []);
+  }, [cookies?.userToken, removeCookie]);
 
   const displayMenuButtons = useCallback(
     () =>
