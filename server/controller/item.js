@@ -1,10 +1,8 @@
 import { Category, Item } from "../model/index.js";
 import { BAD_REQUEST, INVALID_CREDENTIAL, NOT_FOUND, OK } from "../statusCode.js";
 import dotenv from "dotenv";
-// import redisInstance, { DEFAULT_EXPIRATION_TIME } from "../redisInstance.js";
 
 dotenv.config();
-// const redisClient = redisInstance.getConnection();
 
 const getItemByCategoryName = async (category, req, res, next) => {
   try {
@@ -34,6 +32,7 @@ const getItemByCategoryName = async (category, req, res, next) => {
 
 export const getValidItem = async (req, res, next) => {
   const { category } = req.query;
+
   if (category) {
     await getItemByCategoryName(category, req, res, next);
     return;
