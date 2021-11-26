@@ -84,6 +84,10 @@ const Header = () => {
         {
           label: "Sign Up",
           page: "/signup"
+        },
+        {
+          label: "Documentation",
+          page: "/documentation"
         }
       ]);
     } else {
@@ -95,6 +99,10 @@ const Header = () => {
         {
           label: "Post Item",
           page: "/addItem"
+        },
+        {
+          label: "Documentation",
+          page: "/documentation"
         }
       ]);
     }

@@ -25,7 +25,9 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm();
+  } = useForm({
+    mode: "all"
+  });
 
   const router = useRouter();
   const [cookies, setCookies, removeCookie] = useCookies(["userToken"]);

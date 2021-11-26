@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/router";
 import { getCurrentUser } from "../src/api/user";
 import { useCookies } from "react-cookie";
-import { CircularProgress, MenuItem, Select } from "@material-ui/core";
+import { MenuItem, Select } from "@material-ui/core";
 import { getAllCategory } from "../src/api/category";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
@@ -177,13 +177,6 @@ const headersData = [
   }
 ];
 
-const LoadingContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const ImageInput = styled.input`
   position: absolute;
   top: 0;
@@ -209,6 +202,7 @@ const AddItem = () => {
     control,
     formState: { errors }
   } = useForm({
+    mode: "all",
     defaultValues: {
       category: ""
     }
