@@ -5,6 +5,7 @@ import MarketplaceLogo from "./logo";
 import styled from "styled-components";
 import { getCurrentUser } from "../../api/user";
 import { useCookies } from "react-cookie";
+import { toast } from "react-hot-toast";
 
 const StyleAppBar = styled(AppBar)`
   width: 100%;
@@ -127,6 +128,7 @@ const Header = () => {
                   setUser(null);
                   localStorage.removeItem("user");
                   removeCookie("userToken");
+                  toast.success("☺️See You Next Time~");
                 }}>
                 Log out
               </ButtonLink>

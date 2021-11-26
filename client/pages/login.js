@@ -56,7 +56,6 @@ const Login = () => {
         try {
           const data = (await getCurrentUser()).data;
           if (data?.message) {
-            toast.error("Hey! You already login!");
             await router.push("/");
           }
         } catch (e) {
