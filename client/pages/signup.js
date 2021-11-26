@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Loading from "../src/components/Loading";
 import Header from "../src/components/Header";
+import { toast } from "react-hot-toast";
 
 const SignUpContainer = styled.div`
   font-size: 1rem;
@@ -55,7 +56,7 @@ const Signup = () => {
         try {
           const data = (await getCurrentUser()).data;
           if (data?.message) {
-            console.log("User has been logined");
+            toast.error("Hey! You already login!");
             await router.push("/");
           }
         } catch (e) {

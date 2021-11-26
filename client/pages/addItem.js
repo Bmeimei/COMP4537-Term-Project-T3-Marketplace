@@ -266,7 +266,7 @@ const AddItem = () => {
       const response = await addItem(name, price, description, category, image);
       console.log(response);
       await router.push("/");
-      toast.success("Successfully create post!");
+      toast.success("Successfully create post!😎");
     } catch (e) {
       setErrorMessage(e.message);
     } finally {
