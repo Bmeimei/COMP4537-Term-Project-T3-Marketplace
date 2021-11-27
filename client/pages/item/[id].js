@@ -75,7 +75,7 @@ const Item = () => {
     }
   }, [id, router]);
 
-  if (isLoaded) {
+  if (isLoaded || !item.name) {
     return <Loading />;
   }
 
