@@ -89,8 +89,12 @@ const Item = () => {
         </ImageContainer>
         <Info>
           <h2>{item.name}</h2>
+          <h3>Category: {item.category.name}</h3>
           <h4>${item.price}</h4>
           <p>Post Time: {moment(item.createdAt).format("YYYY-MM-DD, HH:mm")}</p>
+          <Divider />
+          <h3>Owner: {item.user.username}</h3>
+          <h4>Email: {item.user.email}</h4>
           <Divider />
           <h3>Description:</h3>
           <ReactMarkdown rehypePlugins={[rehypeRaw]}>{item.description}</ReactMarkdown>
