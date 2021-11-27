@@ -52,7 +52,15 @@ export const getValidItem = async (req, res, next) => {
 export const getItemById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const item = await Item.findById(id).exec();
+    const item = await Item.findById(id)
+      .populate("category", {
+        name: 1
+      })
+      .populate("user", {
+        username: 1,
+        email: 1
+      })
+      .exec();
     if (!item) {
       res.status(NOT_FOUND);
       next(new Error(`Item with id '${id}' Not Found!`));
