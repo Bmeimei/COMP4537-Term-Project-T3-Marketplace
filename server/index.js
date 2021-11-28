@@ -24,6 +24,13 @@ app.use(
   })
 );
 
+app.options(
+  "*",
+  cors({
+    origin: process.env.CLIENT_PORT
+  })
+);
+
 mongoose
   .connect(process.env.MONGODB_URL, {
     useNewUrlParser: true,
