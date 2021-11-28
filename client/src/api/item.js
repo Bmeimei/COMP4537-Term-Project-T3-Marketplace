@@ -10,7 +10,7 @@ export const getItemById = async (id) => {
 };
 
 export const deleteItemById = async (id) => {
-  return await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/item/${id}`);
+  return await userBaseRequest.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/item/${id}`);
 };
 
 export const addItem = async (name, price, description, category, image) => {
@@ -33,6 +33,14 @@ export const updateItem = async (id, name, price, description, category, image) 
   });
 };
 
-export const getItemsByCategoryName = async (category) => {
-  return await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/item?${category}`);
+export const hideItemById = async (id) => {
+  return await userBaseRequest.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/item/${id}`, {
+    isValid: false
+  });
+};
+
+export const displayItemById = async (id) => {
+  return await userBaseRequest.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/item/${id}`, {
+    isValid: true
+  });
 };
