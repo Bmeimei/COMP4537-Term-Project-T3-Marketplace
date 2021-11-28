@@ -18,12 +18,11 @@ const app = express();
 const PORT = process.env.PORT || 5050;
 app.use(express.json());
 
-const corsOptions = {
-  origin: process.env.CLIENT_PORT,
-  methods: "GET, HEAD, PUT, PATCH, POST, DELETE"
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: process.env.CLIENT_PORT
+  })
+);
 
 mongoose
   .connect(process.env.MONGODB_URL, {
