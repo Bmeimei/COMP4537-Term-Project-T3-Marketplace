@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 5050;
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.CLITENT_PORT || "*"
+    origin: process.env.CLITENT_PORT
   })
 );
 
