@@ -1,5 +1,12 @@
 import express from "express";
-import { addItem, deleteItem, editItem, getItemById, getValidItem } from "../controller/item.js";
+import {
+  addItem,
+  deleteItem,
+  displayOrHideItem,
+  editItem,
+  getItemById,
+  getValidItem
+} from "../controller/item.js";
 import { auth } from "../auth.js";
 
 const ItemRouter = express.Router();
@@ -18,6 +25,9 @@ ItemRouter.post("/", auth, addItem);
 
 // Edit Item
 ItemRouter.put("/:id", auth, editItem);
+
+// Hide Item or Display Item
+ItemRouter.patch("/:id", auth, displayOrHideItem);
 
 // Delete Item
 ItemRouter.delete("/:id", auth, deleteItem);

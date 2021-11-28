@@ -111,8 +111,6 @@ export const editItem = async (req, res, next) => {
     const { name, price, description, category, image } = req.body;
     const item = await Item.findById(id);
     const originUserId = item.user.toString();
-    console.log(originUserId);
-    console.log(userId);
     if (userId !== originUserId) {
       res.status(INVALID_CREDENTIAL);
       next(new Error("You have no right to edit this item"));
@@ -132,6 +130,38 @@ export const editItem = async (req, res, next) => {
       image,
       category: existCategory._id
     }).exec();
+    res.status(200).send({
+      message: "Success"
+    });
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+export const displayOrHideItem = async (req, res, next) => {
+  const { id } = req.params;
+  const userId = req.userId;
+
+  try {
+    const { isValid } = req.body;
+
+    if (isValid === null || isValid === undefined) {
+      res.status(400);
+      next(new Error("Missing isValid field"));
+      return;
+    }
+
+    const item = await Item.findById(id);
+    const originUserId = item.user.toString();
+    if (userId !== originUserId) {
+      res.status(INVALID_CREDENTIAL);
+      next(new Error("You have no right to edit this item"));
+      return;
+    }
+    await Item.findByIdAndUpdate(id, {
+      isValid
+    });
     res.status(200).send({
       message: "Success"
     });

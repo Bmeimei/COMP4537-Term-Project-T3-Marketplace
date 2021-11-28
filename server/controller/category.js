@@ -4,7 +4,11 @@ import { ALREADY_EXIST, BAD_REQUEST, OK } from "../statusCode.js";
 const getAllItemGroupByCategories = async (req, res, next) => {
   try {
     const categories = await Category.find().lean().exec();
-    const items = await Item.find().lean().exec();
+    const items = await Item.find({
+      isValid: true
+    })
+      .lean()
+      .exec();
     for (const category of categories) {
       category.items = [];
       const categoryId = category._id;
