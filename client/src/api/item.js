@@ -23,6 +23,16 @@ export const addItem = async (name, price, description, category, image) => {
   });
 };
 
+export const updateItem = async (id, name, price, description, category, image) => {
+  return await userBaseRequest.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/item/${id}`, {
+    name,
+    price,
+    description,
+    category,
+    image
+  });
+};
+
 export const getItemsByCategoryName = async (category) => {
   return await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/item?${category}`);
 };

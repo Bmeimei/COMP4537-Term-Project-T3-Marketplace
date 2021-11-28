@@ -115,7 +115,7 @@ export const editItem = async (req, res, next) => {
     console.log(userId);
     if (userId !== originUserId) {
       res.status(INVALID_CREDENTIAL);
-      next(new Error("User Id doesn't match the Owner Id"));
+      next(new Error("You have no right to edit this item"));
       return;
     }
 

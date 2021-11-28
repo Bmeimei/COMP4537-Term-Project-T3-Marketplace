@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import Header from "../src/components/Header";
+import Header from "../../src/components/Header";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/router";
-import { getCurrentUser } from "../src/api/user";
+import { getCurrentUser } from "../../src/api/user";
 import { useCookies } from "react-cookie";
 import { MenuItem, Select } from "@material-ui/core";
-import { getAllCategory } from "../src/api/category";
+import { getAllCategory } from "../../src/api/category";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import Image from "next/image";
-import { addItem } from "../src/api/item";
+import { getItemById, updateItem } from "../../src/api/item";
 import { toast } from "react-hot-toast";
-import Loading from "../src/components/Loading";
+import Loading from "../../src/components/Loading";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -187,8 +187,10 @@ const ImageInput = styled.input`
   cursor: pointer;
 `;
 
-const AddItem = () => {
+const EditItem = () => {
   const router = useRouter();
+  const id = router.query.id;
+  const [item, setItem] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [cookies, setCookies, removeCookie] = useCookies(["userToken"]);
   const [categories, setCategories] = useState([]);
@@ -202,10 +204,7 @@ const AddItem = () => {
     control,
     formState: { errors }
   } = useForm({
-    mode: "all",
-    defaultValues: {
-      category: ""
-    }
+    mode: "all"
   });
 
   const descriptionContent = watch("description");
@@ -216,6 +215,25 @@ const AddItem = () => {
     },
     [setValue]
   );
+
+  useEffect(() => {
+    if (id) {
+      setIsLoaded(true);
+      (async () => {
+        try {
+          const data = (await getItemById(id)).data;
+          setItem(data.item);
+          console.log(data.item);
+        } catch (e) {
+          console.log(e);
+          // eslint-disable-next-line no-unused-vars
+          router.push("/404").then((_) => toast.error("Item Not Found🥲"));
+        } finally {
+          setIsLoaded(false);
+        }
+      })();
+    }
+  }, [id, router]);
 
   useEffect(() => {
     if (cookies.userToken) {
@@ -254,28 +272,38 @@ const AddItem = () => {
     })();
   }, []);
 
-  const onSubmit = async (data) => {
-    if (!image) {
-      setErrorMessage("Please upload the image");
-      return;
+  useEffect(() => {
+    if (item?.name) {
+      setValue("name", item.name);
+      setValue("price", item.price);
+      setValue("description", item.description);
+      setValue("category", item.category.name);
+      setValue("image", item.image);
     }
-    setErrorMessage("");
-    setIsLoaded(true);
-    try {
-      const { name, category, price, image, description } = data;
-      const response = await addItem(name, price, description, category, image);
-      console.log(response);
-      await router.push("/");
-      toast.success("Successfully create post!😎");
-    } catch (e) {
-      toast.error(e.message);
-      setErrorMessage(e.message);
-    } finally {
-      setIsLoaded(false);
-    }
+  }, [item, setValue]);
 
-    console.log(data);
-  };
+  const onSubmit = useCallback(
+    async (data) => {
+      if (!image) {
+        setErrorMessage("Please upload the image");
+        return;
+      }
+      setErrorMessage("");
+      setIsLoaded(true);
+      try {
+        const { name, category, price, image, description } = data;
+        const response = await updateItem(id, name, price, description, category, image);
+        console.log(response);
+        await router.push("/");
+        toast.success("Successfully update your post!😎");
+      } catch (e) {
+        setErrorMessage(e.message);
+      } finally {
+        setIsLoaded(false);
+      }
+    },
+    [id, image, router]
+  );
 
   const uploadImage = useCallback(
     async (e) => {
@@ -304,7 +332,7 @@ const AddItem = () => {
     [setValue]
   );
 
-  if (isLoaded) {
+  if (isLoaded || !item.name) {
     return <Loading />;
   }
 
@@ -332,6 +360,7 @@ const AddItem = () => {
               name="category"
               control={control}
               rules={{ required: true }}
+              defaultValue={item.category.name}
               render={({ field }) => (
                 <SelectBox {...field}>
                   {categories.map((category, index) => (
@@ -397,4 +426,4 @@ const AddItem = () => {
   );
 };
 
-export default AddItem;
+export default EditItem;
