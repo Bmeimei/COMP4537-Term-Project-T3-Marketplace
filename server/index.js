@@ -1,5 +1,4 @@
 import express from "express";
-import cors from "cors";
 import dotenv from "dotenv";
 import { INTERNAL_SERVER_ERROR, OK } from "./statusCode.js";
 import mongoose from "mongoose";
@@ -17,12 +16,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5050;
 app.use(express.json());
-
-// app.use(
-//   cors({
-//     origin: process.env.CLIENT_PORT
-//   })
-// );
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "https://marketplace.cacodehunter.com");
