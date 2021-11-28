@@ -104,6 +104,43 @@ export const addItem = async (req, res, next) => {
   }
 };
 
+export const editItem = async (req, res, next) => {
+  const userId = req.userId;
+  const { id } = req.params;
+  try {
+    const { name, price, description, category, image } = req.body;
+    const item = await Item.findById(id);
+    const originUserId = item.user.toString();
+    console.log(originUserId);
+    console.log(userId);
+    if (userId !== originUserId) {
+      res.status(INVALID_CREDENTIAL);
+      next(new Error("User Id doesn't match the Owner Id"));
+      return;
+    }
+
+    const existCategory = await Category.findOne({ name: category });
+    if (!existCategory) {
+      res.status(BAD_REQUEST);
+      next(new Error(`Category '${category} is invalid!'`));
+      return;
+    }
+    await Item.findByIdAndUpdate(id, {
+      name,
+      price,
+      description,
+      image,
+      category: existCategory._id
+    }).exec();
+    res.status(200).send({
+      message: "Success"
+    });
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const deleteItem = async (req, res, next) => {
   const { id } = req.params;
   const userId = req.userId;

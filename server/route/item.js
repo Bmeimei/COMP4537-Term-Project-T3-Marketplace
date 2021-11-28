@@ -1,5 +1,5 @@
 import express from "express";
-import { addItem, deleteItem, getItemById, getValidItem } from "../controller/item.js";
+import { addItem, deleteItem, editItem, getItemById, getValidItem } from "../controller/item.js";
 import { auth } from "../auth.js";
 
 const ItemRouter = express.Router();
@@ -15,6 +15,9 @@ ItemRouter.get("/:id", getItemById);
 
 // Add Item
 ItemRouter.post("/", auth, addItem);
+
+// Edit Item
+ItemRouter.put("/:id", auth, editItem);
 
 // Delete Item
 ItemRouter.delete("/:id", auth, deleteItem);
