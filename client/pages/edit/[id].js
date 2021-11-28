@@ -405,7 +405,7 @@ const EditItem = () => {
             />
           )}
           <Button type="submit" backgroundColor="#56cbf9">
-            Create
+            Update
           </Button>
         </Form>
         {(() => {
