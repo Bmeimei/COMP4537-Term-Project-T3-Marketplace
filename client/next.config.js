@@ -1,6 +1,6 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ["str.cacodehunter.com"]
+    domains: [process.env.NEXT_PUBLIC_IMAGE_SERVER_ORIGIN]
   }
 };
